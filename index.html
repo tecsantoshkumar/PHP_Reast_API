@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <title>Reast API</title>
+
+</head>
+
+<body>
+
+    <div class="topnav">
+        <a class="active" href="#">PHP Reast API</a>
+        <div class="search-container">
+            <form action="/action_page.php">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="div">
+        <form action="#">
+            <label for="fname">Name</label>
+            <input class="input" type="text" id="fname" name="name" placeholder="Your name..">
+
+            <label for="lname">Email</label>
+            <input class="input" type="text" id="lname" name="email" placeholder="Your  email..">
+            <input class="input" type="submit" value="Save">
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>EMAIL</th>
+                <th>EDIT</th>
+                <th>DELETE</th>
+            </tr>
+        </thead>
+        <tbody id="load-table"> </tbody>
+
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            function loadTable() {
+                $.ajax({
+                    url: 'http://127.0.0.1/PHP_Reast_API/fetch_all.php',
+                    type: "GET",
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status == false) {
+                            $("#load-table").append("<tr><td colspan='6'><h2>" + data.message + "</2></td></tr>")
+                        } else {
+                            $.each(data, function(key, value) {
+                                $("#load-table").append("<tr>" +
+                                    "<td>" + value.id + "</td>" +
+                                    "<td>" + value.name + "</td>" +
+                                    "<td>" + value.email + "</td>" +
+                                    "<td><button><i class='fa fa-edit'  style='font-size:28px;color:blue' data-eid = " + value.id + "></i></button></td>" +
+                                    "<td><button><i class='material-icons' style='font-size:28px;color:red' data-did = " + value.id + ">delete</i></button></td>" +
+                                    "</tr>");
+                            });
+                        }
+                    }
+                });
+            }
+            loadTable();
+        });
+    </script>
+
+</body>
+
+</html>
